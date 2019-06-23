@@ -1,5 +1,5 @@
 import javax.crypto.*;
-import java.security.Security;
+import java.security.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.util.*;
@@ -55,6 +55,31 @@ public class hw2{
     //decrypt cipherText
     plainTextBytes = new byte[inputMsg.length];
     cipher.init(Cipher.DECRYPT_MODE, key);
+    plainTextBytes = cipher.doFinal(cipherText);
+    plainText = new String(plainTextBytes);
+    System.out.println("Decrypted plainText: " + plainText);
+    //---------------------------------------------------------------------
+
+    //-------------------------------RSA-----------------------------------
+    //make a key pair and update cipher
+    KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
+    kpGen.initialize(1024);
+    KeyPair kp = kpGen.generateKeyPair();
+    Key pubKey = kp.getPublic();
+    Key privKey = kp.getPrivate();
+    //System.out.println("Public Key = " + pubKey + "\nPrivateKey = " + privKey);
+    cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");
+
+
+    System.out.println("\n--RSA--");
+    //encrypt input message
+    cipherText = new byte[inputMsg.length];
+    cipher.init(Cipher.ENCRYPT_MODE, pubKey); //encrypt with someones public key
+    cipherText = cipher.doFinal(inputMsg);
+    System.out.println("Encrypted input: " + cipherText.toString());
+    //decrypt cipherText
+    plainTextBytes = new byte[inputMsg.length];
+    cipher.init(Cipher.DECRYPT_MODE, privKey); //user decrypts with user's private key
     plainTextBytes = cipher.doFinal(cipherText);
     plainText = new String(plainTextBytes);
     System.out.println("Decrypted plainText: " + plainText);

@@ -65,8 +65,8 @@ public class hw2{
     KeyPairGenerator kpGen = KeyPairGenerator.getInstance("RSA", "BC");
     kpGen.initialize(1024);
     KeyPair kp = kpGen.generateKeyPair();
-    Key pubKey = kp.getPublic();
-    Key privKey = kp.getPrivate();
+    PublicKey pubKey = kp.getPublic();
+    PrivateKey privKey = kp.getPrivate();
     //System.out.println("Public Key = " + pubKey + "\nPrivateKey = " + privKey);
     cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");
 
@@ -83,6 +83,19 @@ public class hw2{
     plainTextBytes = cipher.doFinal(cipherText);
     plainText = new String(plainTextBytes);
     System.out.println("Decrypted plainText: " + plainText);
+
+    //RSA Signature
+    Signature sig = Signature.getInstance("SHA1withRSA", "BC");
+    sig.initSign(privKey);
+    sig.update(inputMsg);
+    //verify the Signature
+    byte[] sigBytes = sig.sign();
+    sig.initVerify(kp.getPublic());
+    sig.update(inputMsg);
+    if(sig.verify(sigBytes)) System.out.println("Signature verification succeeded.");
+    else System.out.println("Signature verification failed.");
     //---------------------------------------------------------------------
+
+
   }
 }

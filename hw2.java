@@ -91,52 +91,52 @@ public class hw2{
 
     //100 AES encryptions timed
     System.out.println("\nExtra Credit -- Crypto Algorithm comparisons:");
-    long aes_start_time = System.nanoTime();
+    double aes_start_time = System.nanoTime();
     cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "BC");
-    keyGen = KeyGenerator.getInstance("AES");
-    keyGen.init(128); //128 bit key
-    key = keyGen.generateKey();
     for(int i = 0; i < randStrArr.length; i++){
+      keyGen = KeyGenerator.getInstance("AES");
+      keyGen.init(128); //128 bit key
+      key = keyGen.generateKey();
       AESencrypt(randStrArr[i].getBytes(), key, cipher);
     }
-    long aes_time = System.nanoTime() - aes_start_time;
+    double aes_time = System.nanoTime() - aes_start_time;
     System.out.println("\t100 AES Encryptions = " + aes_time + " nanoseconds.");
 
 
     //100 Blowfish encryptions timed
-    long blowfish_start_time = System.nanoTime();
+    double blowfish_start_time = System.nanoTime();
     cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
-    keyGen = KeyGenerator.getInstance("Blowfish");
-    keyGen.init(128);
-    key = keyGen.generateKey();
     for(int i = 0; i < randStrArr.length; i++){
+      keyGen = KeyGenerator.getInstance("Blowfish");
+      keyGen.init(128);
+      key = keyGen.generateKey();
       Blowfishencrypt(randStrArr[i].getBytes(), key, cipher);
     }
-    long blowfish_time = System.nanoTime() - blowfish_start_time;
+    double blowfish_time = System.nanoTime() - blowfish_start_time;
     System.out.println("\t100 Blowfish Encryptions = " + blowfish_time + " nanoseconds.");
 
     //100 RSA encryptions timed
-    long rsa_start_time = System.nanoTime();
-    kpGen = KeyPairGenerator.getInstance("RSA", "BC");
-    kpGen.initialize(1024);
-    kp = kpGen.generateKeyPair();
-    pubKey = kp.getPublic();
+    double rsa_start_time = System.nanoTime();
     cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA1AndMGF1Padding", "BC");
     for(int i = 0; i < randStrArr.length; i++){
+      kpGen = KeyPairGenerator.getInstance("RSA", "BC");
+      kpGen.initialize(1024);
+      kp = kpGen.generateKeyPair();
+      pubKey = kp.getPublic();
       RSAencrypt(randStrArr[i].getBytes(), pubKey, cipher);
     }
-    long rsa_time = System.nanoTime() - rsa_start_time;
+    double rsa_time = System.nanoTime() - rsa_start_time;
     System.out.println("\t100 RSA Encryptions = " + rsa_time + " nanoseconds");
 
     //comparisons
-    long aes_comp_rsa = rsa_time / aes_time;
-    System.out.println("AES encryption is " + aes_comp_rsa + " times faster than RSA encryption.");
+    double aes_comp_rsa = rsa_time / aes_time;
+    System.out.printf("\nAES encryption is %.2f times faster than RSA encryption.\n", aes_comp_rsa);
 
-    long blowfish_comp_rsa = rsa_time / blowfish_time;
-    System.out.println("Blowfish encryption is " + blowfish_comp_rsa + " times faster than RSA encryption.");
+    double blowfish_comp_rsa = rsa_time / blowfish_time;
+    System.out.printf("Blowfish encryption is %.2f times faster than RSA encryption.\n", blowfish_comp_rsa);
 
-    long blowfish_comp_aes = aes_time / blowfish_time;
-    System.out.println("Blowfish encryption is " + blowfish_comp_aes + " times faster than AES encryption.");
+    double blowfish_comp_aes = aes_time / blowfish_time;
+    System.out.printf("Blowfish encryption is %.2f times faster than AES encryption.\n", blowfish_comp_aes);
 
     //---------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ public class hw2{
     String[] ret = new String[100];
 
     for(int k = 0; k < ret.length; k++){
-      for (int i = 0; i < 40; i++) {        //strings of length 40
+      for (int i = 0; i < 50; i++) {        //strings of length 40
         int index = (int)(characters.length() * Math.random());
         sb.append(characters.charAt(index));
       }
